@@ -6,7 +6,7 @@
 [//]: # "  "
 [//]: # " SPDX-License-Identifier: BSD-3-Clause "
 
-# Eclipse Implementation of JAXB
+# Eclipse Implementation of JAXB (fork)
 
 [![Build Status](https://github.com/eclipse-ee4j/jaxb-ri/actions/workflows/maven.yml/badge.svg?branch=master)](https://github.com/eclipse-ee4j/jaxb-ri/actions/workflows/maven.yml?branch=master)
 [![Jakarta Staging (Snapshots)](https://img.shields.io/nexus/s/https/jakarta.oss.sonatype.org/com.sun.xml.bind/jaxb-ri.svg)](https://jakarta.oss.sonatype.org/content/repositories/staging/com/sun/xml/bind/jaxb-ri/)
