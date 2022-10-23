@@ -10,12 +10,18 @@
 
 package org.glassfish.jaxb.core.v2.util;
 
+
+
 import org.glassfish.jaxb.core.v2.Messages;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,17 +32,20 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathFactoryConfigurationException;
 
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
-
 /**
- * Provides helper methods for creating properly configured XML parser 
- * factory instances with namespace support turned on and configured for 
+ * Provides helper methods for creating properly configured XML parser
+ * factory instances with namespace support turned on and configured for
  * security.
  * @author snajper
  */
 public class XmlFactory {
+
+    private static SchemaFactory schemaFactory;
+    private static SAXParserFactory saxParserFactory;
+    private static XPathFactory xPathFactory;
+    private static TransformerFactory transformerFactory;
+    private static DocumentBuilderFactory documentBuilderFactory;
+
 
     // not in older JDK, so must be duplicated here, otherwise javax.xml.XMLConstants should be used
     public static final String ACCESS_EXTERNAL_SCHEMA = "http://javax.xml.XMLConstants/property/accessExternalSchema";
@@ -69,13 +78,21 @@ public class XmlFactory {
     }
 
     /**
-     * Returns properly configured (e.g. security features) schema factory 
+     * Returns properly configured (e.g. security features) schema factory
      * - namespaceAware == true
      * - securityProcessing == is set based on security processing property, default is true
      */
     public static SchemaFactory createSchemaFactory(final String language, boolean disableSecureProcessing) throws IllegalStateException {
         try {
-            SchemaFactory factory = SchemaFactory.newInstance(language);
+
+            SchemaFactory factory;
+            if(schemaFactory == null) {
+                factory = SchemaFactory.newInstance(language);
+            }
+            else {
+                factory = schemaFactory;
+            }
+
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "SchemaFactory instance: {0}", factory);
             }
@@ -94,13 +111,21 @@ public class XmlFactory {
     }
 
     /**
-     * Returns properly configured (e.g. security features) parser factory 
+     * Returns properly configured (e.g. security features) parser factory
      * - namespaceAware == true
      * - securityProcessing == is set based on security processing property, default is true
      */
     public static SAXParserFactory createParserFactory(boolean disableSecureProcessing) throws IllegalStateException {
         try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
+
+            SAXParserFactory factory;
+            if(saxParserFactory == null) {
+                factory = SAXParserFactory.newInstance();
+            }
+            else {
+                factory = saxParserFactory;
+            }
+
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "SAXParserFactory instance: {0}", factory);
             }
@@ -123,12 +148,22 @@ public class XmlFactory {
     }
 
     /**
-     * Returns properly configured (e.g. security features) factory 
+     * Returns properly configured (e.g. security features) factory
      * - securityProcessing == is set based on security processing property, default is true
      */
     public static XPathFactory createXPathFactory(boolean disableSecureProcessing) throws IllegalStateException {
         try {
-            XPathFactory factory = XPathFactory.newInstance();
+
+
+            XPathFactory factory;
+
+            if(xPathFactory == null) {
+                factory = XPathFactory.newInstance();
+            }
+            else {
+                factory = xPathFactory;
+            }
+
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "XPathFactory instance: {0}", factory);
             }
@@ -144,12 +179,20 @@ public class XmlFactory {
     }
 
     /**
-     * Returns properly configured (e.g. security features) factory 
+     * Returns properly configured (e.g. security features) factory
      * - securityProcessing == is set based on security processing property, default is true
      */
     public static TransformerFactory createTransformerFactory(boolean disableSecureProcessing) throws IllegalStateException {
         try {
-            TransformerFactory factory = TransformerFactory.newInstance();
+
+            TransformerFactory factory;
+            if(getTransformerFactory() == null) {
+                factory = TransformerFactory.newInstance();;
+            }
+            else {
+                factory = getTransformerFactory();
+            }
+
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "TransformerFactory instance: {0}", factory);
             }
@@ -165,13 +208,22 @@ public class XmlFactory {
     }
 
     /**
-     * Returns properly configured (e.g. security features) factory 
+     * Returns properly configured (e.g. security features) factory
      * - namespaceAware == true
      * - securityProcessing == is set based on security processing property, default is true
      */
     public static DocumentBuilderFactory createDocumentBuilderFactory(boolean disableSecureProcessing) throws IllegalStateException {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+            DocumentBuilderFactory factory;
+
+            if(documentBuilderFactory == null) {
+                factory = DocumentBuilderFactory.newInstance();
+            }
+            else {
+                factory = documentBuilderFactory;
+            }
+
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "DocumentBuilderFactory instance: {0}", factory);
             }
@@ -249,4 +301,43 @@ public class XmlFactory {
         return sf;
     }
 
+    public static TransformerFactory getTransformerFactory() {
+        return transformerFactory;
+    }
+
+    public static void setTransformerFactory(TransformerFactory transformerFactory) {
+        XmlFactory.transformerFactory = transformerFactory;
+    }
+
+    public static DocumentBuilderFactory getDocumentBuilderFactory() {
+        return documentBuilderFactory;
+    }
+
+    public static void setDocumentBuilderFactory(DocumentBuilderFactory documentBuilderFactory) {
+        XmlFactory.documentBuilderFactory = documentBuilderFactory;
+    }
+
+    public SchemaFactory getSchemaFactory() {
+        return schemaFactory;
+    }
+
+    public void setSchemaFactory(SchemaFactory schemaFactory) {
+        this.schemaFactory = schemaFactory;
+    }
+
+    public SAXParserFactory getSaxParserFactory() {
+        return saxParserFactory;
+    }
+
+    public void setSaxParserFactory(SAXParserFactory saxParserFactory) {
+        this.saxParserFactory = saxParserFactory;
+    }
+
+    public XPathFactory getxPathFactory() {
+        return xPathFactory;
+    }
+
+    public void setxPathFactory(XPathFactory xPathFactory) {
+        this.xPathFactory = xPathFactory;
+    }
 }
