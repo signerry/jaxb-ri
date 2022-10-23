@@ -186,11 +186,11 @@ public class XmlFactory {
         try {
 
             TransformerFactory factory;
-            if(getTransformerFactory() == null) {
+            if(transformerFactory == null) {
                 factory = TransformerFactory.newInstance();;
             }
             else {
-                factory = getTransformerFactory();
+                factory = transformerFactory;
             }
 
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -301,43 +301,22 @@ public class XmlFactory {
         return sf;
     }
 
-    public static TransformerFactory getTransformerFactory() {
-        return transformerFactory;
-    }
-
     public static void setTransformerFactory(TransformerFactory transformerFactory) {
         XmlFactory.transformerFactory = transformerFactory;
-    }
-
-    public static DocumentBuilderFactory getDocumentBuilderFactory() {
-        return documentBuilderFactory;
     }
 
     public static void setDocumentBuilderFactory(DocumentBuilderFactory documentBuilderFactory) {
         XmlFactory.documentBuilderFactory = documentBuilderFactory;
     }
 
-    public SchemaFactory getSchemaFactory() {
-        return schemaFactory;
+    public static void setSchemaFactory(SchemaFactory schemaFactory) {
+        XmlFactory.schemaFactory = schemaFactory;
     }
 
-    public void setSchemaFactory(SchemaFactory schemaFactory) {
-        this.schemaFactory = schemaFactory;
+    public static void setSaxParserFactory(SAXParserFactory saxParserFactory) {
+        XmlFactory.saxParserFactory = saxParserFactory;
     }
-
-    public SAXParserFactory getSaxParserFactory() {
-        return saxParserFactory;
-    }
-
-    public void setSaxParserFactory(SAXParserFactory saxParserFactory) {
-        this.saxParserFactory = saxParserFactory;
-    }
-
-    public XPathFactory getxPathFactory() {
-        return xPathFactory;
-    }
-
-    public void setxPathFactory(XPathFactory xPathFactory) {
-        this.xPathFactory = xPathFactory;
+    public static void setxPathFactory(XPathFactory xPathFactory) {
+        XmlFactory.xPathFactory = xPathFactory;
     }
 }
