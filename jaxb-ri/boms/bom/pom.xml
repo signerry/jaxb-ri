@@ -25,7 +25,7 @@
 
     <groupId>org.glassfish.jaxb</groupId>
     <artifactId>jaxb-bom</artifactId>
-    <version>3.1.0-signerry</version>
+    <version>3.1.5</version>
 
     <packaging>pom</packaging>
     <name>JAXB BOM</name>
