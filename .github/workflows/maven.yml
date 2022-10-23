@@ -40,3 +40,5 @@ jobs:
         java-version: ${{ matrix.java_version }}
     - name: Verify
       run: cd jaxb-ri && mvn -B -V -U -C -Pstaging,oss-release clean verify -Dgpg.skip=true -Doss.disallow.snapshots=false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
